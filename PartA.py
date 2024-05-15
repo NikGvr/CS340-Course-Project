@@ -64,6 +64,11 @@ class Time:
         self.MillisecNum = int(millisec)
         self.MillisecStr = str(millisec)
 
+
+        self.TotalMilliseconds = 0
+
+        self.TotalMilliseconds = self.MillisecNum + (self.SecNum*1000) + (self.MinNum*60*1000)
+
     def ShowTime(self):
         print(self.MinString, "-", self.Seconds, "-", self.Millisec)
 
@@ -232,15 +237,27 @@ def option2():
 
 
 
+#   Menu option 3 : Calculates the average lap time per race then saves this new information as a
+#   7th column in file partA_output_data.tx t . After saving into the file, it should also read back
+#   and display all 7 columns of data on the screen (the 6 original columns + the new one based
+#   on the calculations).
+
 #def option3():
 
 
 
-
+#   Menu option 4: Asks the user for a field to sort by, then whether the order should be ascending
+#   or descending. Displays on screen all data contained in the file sorted according to the user's
+#   instructions. This option refers to the 7-column file generated in option 3 and assumes it exists,
+#   otherwise the program should inform the user to execute option 3 first and then get back to
+#   option 4.
 
 #def option4():
 
 
+#   Menu option 5 : Calculates the total average lap time per driver -across all Grand Prix races- and
+#   presents it as a GUI column graph in a pop-up window (x-axis: driver names. y-axis: average
+#   lap time in minutes).
 
 #def option5():
 
