@@ -14,38 +14,61 @@ from typing import List, Any
 
 
 class Date:
-    def __init__(self, day, month, year):
-        self.DayNum = day
+    def __init__(self, day, month, Year):
+        self.DayNum = int(day)
+
         if day <= 9:
             self.DayStr = "0" + str(day)
         else:
             self.DayStr = str(day)
-        self.month = month
-        self.year = year
+
+        
+        self.MonthStr = str(month)
+        self.MonthList = ["Jan", 'Feb', "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        self.MonthNum = 0
+        for i in range(len(self.MonthList)):
+            if self.MonthStr == self.MonthList[i]:
+                self.MonthNum = i + 1
+        
+        self.YearStr = str(Year)
+        self.YearNum = int(Year)
+
+
 
     def ShowDate(self):
         print(self.DayStr, "-", self.month, "-", self.year)
 
     def ReturnDate(self):
-        ReturnString = (self.DayStr, "-", self.month, "-", self.year)
+        ReturnString = f"{self.DayStr}-{self.MonthStr}-{self.YearStr}"
         return ReturnString
 
 
 class Time:
     def __init__(self, min, sec, millisec):
-        self.MinNum = min
-        if min <= 9:
-            self.MinString = "0" + str(min)
+
+        self.MinNum = int(min)
+
+        if int(min) <= 9:
+            self.MinStr = "0" + str(min)
         else:
-            self.MinString = str(min)
-        self.Seconds = sec
-        self.Millisec = millisec
+            self.MinStr = str(min)
+
+        
+        self.SecNum = int(sec)
+
+        if(int(sec) <= 9):
+            self.SecStr = "0" + str(sec)
+        else:
+            self.SecStr = str(sec)
+
+        self.MillisecNum = int(millisec)
+        self.MillisecStr = str(millisec)
 
     def ShowTime(self):
         print(self.MinString, "-", self.Seconds, "-", self.Millisec)
 
     def ReturnTime(self):
-        ReturnString = (self.MinString, ":", self.Seconds, ".", self.Millisec)
+        ReturnString = f"{self.MinStr}-{self.SecStr}-{self.MillisecStr}"
         return ReturnString
 
 
@@ -59,7 +82,13 @@ class Race:
         self.Laps = int(Laps)
         self.Time = Time
 
+    def ReturnRace(self):
+        StringToReturn = (f"{self.GrandPrix:<15} {self.Date.ReturnDate():<15} {self.Winner:<20} {self.Car:<20} {self.Laps:<5} {self.Time.ReturnTime():<15}")
+        return StringToReturn
 
+
+
+F1List = []
 
 def CreatePartAFile():
     file = open(filename, "w")
@@ -111,7 +140,6 @@ def CheckIfValidOption(option):
         return False
 
 def FileToList():
-    F1List = []
     file = open(filename, "r")
     lines = file.readlines()
     for line in lines[1:]:
@@ -155,7 +183,7 @@ def option1():
     fout = open(filename, "r")
     for line in fout:
         fields = line.strip().split(',')
-        print(f"{fields[0]:<15} {fields[1]:<15} {fields[2]:<20} {fields[3]:<20} {fields[4]:<15} {fields[5]:<15}")
+        print(f"{fields[0]:<15} {fields[1]:<15} {fields[2]:<20} {fields[3]:<20} {fields[4]:<5} {fields[5]:<15}")
 
 
     fout.close()
@@ -163,7 +191,43 @@ def option1():
 #Menu option 2: Asks the user for a limit of laps to search by, then displays only the race results
 #which involve that number of home laps or greater, sorted alphabetically by Grand Prix name.
 
-#def option2():
+def option2():
+
+    LapsLimit = 0
+    LapsLimit = int(input("Plase input a limit of laps to show races that have more laps that than and Alphabetically sorted."))
+
+    # Creating the F1ListSorted that will be used for that option
+
+    F1ListSorted = []
+
+    #inserting data
+
+    for i in range(len(F1List)):
+        if F1List[i].Laps >= LapsLimit:
+            F1ListSorted.append(F1List[i])
+        
+    #Testing the values of F1ListSorted
+
+    for i in range(len(F1ListSorted)):
+        print(F1ListSorted[i].ReturnRace())
+
+    #sorting the lines alphabetically using the Grand Prix name
+
+    for i in range(len(F1ListSorted)):
+        value = F1ListSorted[i]
+        j = i - 1
+        while j>= 0 and F1ListSorted[j].GrandPrix > value:
+            swap(F1ListSorted[j + 1], F1ListSorted[j])
+            j -= 1
+        
+        F1ListSorted[j + 1] = value
+
+
+    #Checking if the list was sorted proeprly
+    
+    for i in range(len(F1ListSorted)):
+        print(F1ListSorted[i].ReturnRace())
+
 
 
 
@@ -189,7 +253,10 @@ def main():
     print("option 1 Test")
     option1()
     print("FileToList Test")
-    print(F1List)
+    FileToList()
+    for i in range(len(F1List)):
+        print(F1List[i].ReturnRace())
+
 
 filename = "partA_input_data.txt"
 
