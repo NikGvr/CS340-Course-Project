@@ -213,25 +213,28 @@ def option2():
 
     #sorting the lines alphabetically using the Grand Prix name
 
-    for i in range(len(F1ListSorted)):
-        value = F1ListSorted[i]
-        j = i - 1
-        while j>= 0 and F1ListSorted[j].GrandPrix > value:
-            swap(F1ListSorted[j + 1], F1ListSorted[j])
-            j -= 1
-        
-        F1ListSorted[j + 1] = value
+    F1ListSorted = sorted(F1ListSorted, key=lambda x: x.GrandPrix)
+
+
 
 
     #Checking if the list was sorted proeprly
-    
+    print("SortTest")
+    for i in range(len(F1ListSorted)):
+        print(F1ListSorted[i].ReturnRace())
+
+
+    #final Answer for option 2
+
+    print("Here is a List of the races that have more laps than the value you gave us and they are sorted alphabetically.")
     for i in range(len(F1ListSorted)):
         print(F1ListSorted[i].ReturnRace())
 
 
 
-
 #def option3():
+
+
 
 
 
@@ -256,7 +259,7 @@ def main():
     FileToList()
     for i in range(len(F1List)):
         print(F1List[i].ReturnRace())
-
+    option2()
 
 filename = "partA_input_data.txt"
 
