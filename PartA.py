@@ -268,6 +268,12 @@ def option6():
     sys.exit()
 
 
+def SelectOption():
+    print("Please Select one of the options bellow.")
+    Show5Options()
+    SelectedOption = int(input("Please input a number between "))
+
+
 def main():
     CreatePartAFile()
     print("option 1 Test")
