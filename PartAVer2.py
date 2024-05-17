@@ -4,10 +4,6 @@
 
 # imports that will be needed ( suposedly )
 
-import sys
-import os
-from typing import List, Any
-
 # Classes, filenames and lists that will be needed for the project based on project desciption.
 
 # setting the filenames for the functions using them
@@ -33,9 +29,9 @@ F1OutputFile = []
 
 F1OutputFileSorted = []
 
-#A list that will be used for option 5 and it will have the driver names and the average lap time (x-axis: driver names. y-axis: average lap time in minutes)
+#A dictionary that will be used for option 5 and it will have the driver names and the average lap time (x-axis: driver names. y-axis: average lap time in minutes)
 
-F1AverageLapTimes = []
+F1AverageLapTimes = {}
 
 # creating the classes that will be used in the lists, mostly date, time, race, Driver. 
 
@@ -114,6 +110,7 @@ class Time:
     self.SecStr = ""
     self.MillisecNum = 0
     self.MillisecStr = ""
+    self.OnlyMillisecs = 0
 
     # constructor for the class
 
@@ -149,13 +146,23 @@ class Time:
 
         self.MillisecStr = str(milliseconds)
 
-        # function to return the time in the format of the file
+        self.OnlyMillisec = int(self.ConvertToMilisecs())
 
-        def ReturnTime(self):
+    # function to convert time in Milliseconds.
 
-            ReturnString = f"{self.MinStr}:{self.SecStr}.{self.MillisecStr}"
+    def ConvertToMilisecs():
+        
+        ReturnNumber = int((self.MinNum*60*1000) + (self.SecNum*1000) + self.MillisecNum)
 
-            return ReturnString
+        return ReturnNumber
+
+    # function to return the time in the format of the file
+
+    def ReturnTime(self):
+
+        ReturnString = f"{self.MinStr}:{self.SecStr}.{self.MillisecStr}"
+
+        return ReturnString
 
 
 # race class to save the races.
@@ -176,7 +183,7 @@ class Race:
 
     self.Time = Time # the time it took
 
-    self.AverageLapTime = 0 # the average lap time ( needed for option 3 )
+    self.AverageLapTime = 0.0 # the average lap time ( needed for option 3 )
 
     # a constructor for the Race class
 
@@ -206,6 +213,10 @@ class Race:
 
         self.Time = Time
 
+        # creating the average lap time per race.
+
+        self.AverageLapTime = float(int(Time.ConvertToMilisecs()) / int(Laps)) / 1000.0
+
     # function to return race as a string.
 
     def ReturnRace(self):
@@ -213,6 +224,16 @@ class Race:
         StringToReturn = (f"{self.GrandPrix:<15} {self.Date.ReturnDate():<15} {self.Winner:<20} {self.Car:<20} {self.Laps:<5} {self.Time.ReturnTime():<15}")
 
         return StringToReturn
+    
+    # function to output data to the output file in option 3
+
+    def ReturnRaceOutput(self):
+
+        StringToReturn = (f"{self.GrandPrix:<15} {self.Date.ReturnDate():<15} {self.Winner:<20} {self.Car:<20} {self.Laps:<5} {self.Time.ReturnTime():<15}")
+
+        return StringToReturn
+
+
     
 # a class for the driver data ( needed for option 5)
 
@@ -223,15 +244,197 @@ class Driver:
     self.DriverName = ""
     self.TotalLaps = 0
     self.TotalTime = 0
+    self.AverageLapTime = 0
 
-    def __init__(self, name, laps, time):
+    def __init__(self, name, laps, time.ConvertToMilisecs()):
 
         self.DriverName = str(name)
 
         self.TotalLaps = int(laps)
 
+        self.TotalTime = time.ConvertToMilisecs()
+
+        self.AverageLapTime = float(self.TotalLaps / self.TotalTime)
+
+    def AddTimeAndLaps(self, laps, time):
+
+        self.TotalLaps = int(self.TotalLaps) + int(laps)
+
+        self.TotalTime = self.TotalTime + time.ConvertToMillisecs()
+
+    def ReturnAverageLapTime():
+
+        ReturnNumber = float(self.TotalLaps / self.TotalTime) / 1000
+
+        return ReturnNumber
+    
+
+# Creating a function that creates the file regardless if it exists or not.
+
+def CreateInputFile(): #Creationg of the time (it will overwrite if existent.) Based on C++ project comments.
+
+    file = open(inputfile, "w")
+
+    file.write("GRAND PRIX,DATE,WINNER,CAR,LAPS,TIME\n")
+    file.write("Bahrain,05-Mar-23,Max Verstappen,RED BULL RACING,57,33:56.7\n")
+    file.write("Saudi Arabia,19-Mar-23,Sergio Perez,RED BULL RACING,50,21:14.9\n")
+    file.write("Australia,02-Apr-23,Max Verstappen,RED BULL RACING,58,32:38.4\n")
+    file.write("Azerbaijan,30-Apr-23,Sergio Perez,RED BULL RACING,51,32:42.4\n")
+    file.write("Miami,07-May-23,Max Verstappen,RED BULL RACING,57,27:38.2\n")
+    file.write("Monaco,28-May-23,Max Verstappen,RED BULL RACING,78,48:52.0\n")
+    file.write("Spain,04-Jun-23,Max Verstappen,RED BULL RACING,66,27:57.9\n")
+    file.write("Canada,18-Jun-23,Max Verstappen,RED BULL RACING,70,33:58.3\n")
+    file.write("Austria,02-Jul-23,Max Verstappen,RED BULL RACING,71,25:33.6\n")
+    file.write("Great Britain,09-Jul-23,Max Verstappen,RED BULL RACING,52,25:16.9\n")
+    file.write("Hungary,23-Jul-23,Max Verstappen,RED BULL RACING,70,38:08.6\n")
+    file.write("Belgium,30-Jul-23,Max Verstappen,RED BULL RACING,44,22:30.4\n")
+    file.write("Netherlands,27-Aug-23,Max Verstappen,RED BULL RACING,72,24:04.4\n")
+    file.write("Italy,03-Sep-23,Max Verstappen,RED BULL RACING,51,13:41.1\n")
+    file.write("Singapore,17-Sep-23,Carlos Sainz,FERRARI,62,46:37.4\n")
+    file.write("Japan,24-Sep-23,Max Verstappen,RED BULL RACING,53,30:58.4\n")
+    file.write("Qatar,08-Oct-23,Max Verstappen,RED BULL RACING,57,27:39.2\n")
+    file.write("United States,22-Oct-23,Max Verstappen,RED BULL RACING,56,35:21.4\n")
+    file.write("Mexico,29-Oct-23,Max Verstappen,RED BULL RACING,71,02:30.8\n")
+    file.write("Brazil,05-Nov-23,Max Verstappen,RED BULL RACING,71,56:48.9\n")
+    file.write("Las Vegas,18-Nov-23,Max Verstappen,RED BULL RACING,50,29:08.3\n")
+    file.write("Abu Dhabi,26-Nov-23,Max Verstappen,RED BULL RACING,58,27:02.6\n")
+
+    file.close()
+
+# creating a function that reads the data from the file and puts it into the F1File.
+
+def FileToList(): # Taking the F1List list and appending the data from the PartA file.
+
+    file = open(inputfile, "r")
+
+    lines = file.readlines()
+
+    for line in lines[1:]:
+
+        tokens = line.strip().split(',')
+
+        race_token = str(tokens[0])
+
+        date_token = tokens[1].split('-')
+
+        day_token = int(date_token[0])
+
+        month_token = str(date_token[1])
+
+        year_token = int(date_token[2])
+
+        date_token = Date(day_token, month_token, year_token)
+
+        winner_token = str(tokens[2])
+
+        car_token = str(tokens[3])
+
+        laps_token = int(tokens[4])
+
+        time_token = tokens[5]
+
+        time_values = time_token.split(":")
+
+        minutes, seconds_millisec = time_values[0], time_values[1]
+
+        seconds, millisec = seconds_millisec.split(".")
+
+        time_token = Time(minutes, seconds, millisec)
+
+
+        RaceToAppend = Race(race_token, date_token, winner_token, car_token, laps_token, time_token)
+
+        F1File.append(RaceToAppend)
+
+    file.close()
+
+# making a function that reads the data from the file, puts it into the F1FileSorted and sorts it for the option 2 usage.
+
+def F1FileSortedCreation():
+
+    file = open(inputfile, "r")
+
+    lines = file.readlines()
+
+    for line in lines[1:]:
+
+        tokens = line.strip().split(',')
+
+        race_token = str(tokens[0])
+
+        date_token = tokens[1].split('-')
+
+        day_token = int(date_token[0])
+
+        month_token = str(date_token[1])
+
+        year_token = int(date_token[2])
+
+        date_token = Date(day_token, month_token, year_token)
+
+        winner_token = str(tokens[2])
+
+        car_token = str(tokens[3])
+
+        laps_token = int(tokens[4])
+
+        time_token = tokens[5]
+
+        time_values = time_token.split(":")
+
+        minutes, seconds_millisec = time_values[0], time_values[1]
+
+        seconds, millisec = seconds_millisec.split(".")
+
+        time_token = Time(minutes, seconds, millisec)
+
+
+        RaceToAppend = Race(race_token, date_token, winner_token, car_token, laps_token, time_token)
+
+        F1FileSorted.append(RaceToAppend)
+
+    file.close()
+
+    # sorting the data based on the name of the drand prix.
+
+    F1FileSorted = sorted(F1FileSorted, key=lambda x: x.GrandPrix)
+
+
+# Creation of the list for option 3, outcome : there is no possibility of the user 3 needing to run option 3 agian when running option 4
+
+# list needed: F1OutputFile = []
+
+def F1OutputFileCreation():
+
+    for i in range(len(F1File)):
+
+        F1OutputFile[i] = F1File[i]
+
+    file = open(outputfile, 'w')
+
+    file.write("GRAND PRIX,DATE,WINNER,CAR,LAPS,TIME,AVGLAPTIME\n")
+
+    for i in range(len(F1OutputFile)):
+
+        StringToWrite = (f"{F1OutputFile[i].GrandPrix},{F1OutputFile[i].Date.ReturnDate()},{F1OutputFile[i].Winner},{self.Car},{F1OutputFile[i].Laps},{F1OutputFile[i].Time.ReturnTime()},{F1OutputFile[i].AverageLapTime}\n")
+
+        file.write(StringToWrite)
+
+    file.close()
+
+# a function that will take each driver from the starting file and add the needed data into the dictionary
+
+# First make a function that reads the list F1File and adds the needed data
+
+def DriverDictCreation():
+
+    for i in range(len(F1List)):
+
         
+
         
+
+
 
 
 
