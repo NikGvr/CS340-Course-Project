@@ -4,6 +4,10 @@
 
 # imports that will be needed ( suposedly )
 
+# Debug boolean because It is more efficient for me and many other people.
+
+Debug = True
+
 # Classes, filenames and lists that will be needed for the project based on project desciption.
 
 # setting the filenames for the functions using them
@@ -215,7 +219,7 @@ class Race:
 
         # creating the average lap time per race.
 
-        self.AverageLapTime = float(int(Time.ConvertToMilisecs()) / int(Laps)) / 1000.0
+        self.AverageLapTime = float(int(Time.ConvertToMilisecs()) / int(Laps)) / 60000.0
 
     # function to return race as a string.
 
@@ -246,7 +250,7 @@ class Driver:
     self.TotalTime = 0
     self.AverageLapTime = 0
 
-    def __init__(self, name, laps, time.ConvertToMilisecs()):
+    def __init__(self, name, laps, time):
 
         self.DriverName = str(name)
 
@@ -262,11 +266,19 @@ class Driver:
 
         self.TotalTime = self.TotalTime + time.ConvertToMillisecs()
 
+        # updating the average lap time after the addition
+
+        self.AverageLapTime = float(self.TotalLaps / self.TotalTime) / 60000.0
+
     def ReturnAverageLapTime():
 
-        ReturnNumber = float(self.TotalLaps / self.TotalTime) / 1000
+        ReturnNumber = float(self.TotalLaps / self.TotalTime) / 60000.0
 
         return ReturnNumber
+    
+    def GetDetails():
+
+        ReturnString = (f"Name: {self.DriverName} \nLaps: {self.TotalLaps} \nTotalTimeInMilliseconds: {self.TotalTime} \n")
     
 
 # Creating a function that creates the file regardless if it exists or not.
@@ -303,7 +315,7 @@ def CreateInputFile(): #Creationg of the time (it will overwrite if existent.) B
 
 # creating a function that reads the data from the file and puts it into the F1File.
 
-def FileToList(): # Taking the F1List list and appending the data from the PartA file.
+def FileToList(): # Taking the F1File list and appending the data from the PartA file.
 
     file = open(inputfile, "r")
 
@@ -426,10 +438,122 @@ def F1OutputFileCreation():
 
 # First make a function that reads the list F1File and adds the needed data
 
-def DriverDictCreation():
+#dict needed: F1AverageLapTimes
 
-    for i in range(len(F1List)):
+def DriverDictCreationOrUpdate():
 
+    for i in range(len(F1File)):
+
+        # we need a variable that will work as a string with witch we will check if a key ( diver's name ) exists inside the dictionary or not.
+
+        FindDriver = ""
+
+        FindDriver = str(F1File[i].Winner)
+
+        if FindDriver in F1AverageLapTimes:
+
+            if Debug == True:
+                print("Debug: Yes the driver exists and we will add the time and laps, and create the average lap time for the driver.")
+                print("Showing key and value before the update.")
+                print("Key:" + FindDriver )
+                print("value: " + F1AverageLapTimes[FindDriver].GetDetails())
+                print("updating now")
+            
+            # updating the values
+
+            KeyOfValueToUpdate = FindDriver
+
+            ValueToUpdate = F1AverageLapTimes[FindDriver].AddTimeAndLaps(F1File[i].Laps, F1File[i].Time)
+            
+            if Debug == True:
+                
+                print("values updated. SHowing them now,")
+                print("Key:" + FindDriver )
+                print("value: " + F1AverageLapTimes[FindDriver].GetDetails())
+                
+
+        else:
+
+            if Debug == True:
+                print("Debug: The driver does not exist to we will create the driver and add the time and laps into the driver object.")
+
+            #String that will be used as the key in the dict.
+
+            DriverKey = str(F1File[i].Winner)
+
+            #Driver Object that will be used inside the dict.
+
+            DriverObj = Driver(F1File[i].Winner, F1File[i].Laps, F1File[i].Time)
+
+            # creating the key value pair inside the dict
+
+            F1AverageLapTimes.update(DriverKey, DriverObj)
+
+            if Debug == True:
+                print("Debug: The driver key pair is made and it will be shown now.")
+                print("key: " + DriverKey)
+                print("value: " + F1AverageLapTimes[DriverKey])
+
+
+# makign the sorting algorithm for option 4
+
+
+
+# making the sorted verion for option 4
+
+# list needed: F1OutputFileSorted = []
+
+def F1OutputFileSorting():
+    
+    # copy the data
+    
+    for i in range(len(F1OutputFile)):
+    
+        F1OutputFileSorted.append(F1OutputFile[i])
+    
+    # now ask the used witch field does the user want to sort.
+    
+    Pass = False
+
+    while Pass == False:
+        
+        print("Please enter a number cooresponding to the field that you want to sort the list by.")
+        
+        option = int(input("1) Sort by Grand Prix Name\n2) Sort by Date\n3) Sort by Winner\n4) Sort by Car\n5) Sort by laps\n6) Sort by time\n7) Sort by Average Lap Time."))
+        
+        if option in range(1,8):
+            
+            Pass = True
+            
+            print("Accepted option, sorting now.")
+            
+        else:
+            
+            print("incorect option please try again")
+            
+        if(Pass == True):
+            
+            break
+    
+    Pass2 = False
+    
+    while Pass2 == False:
+        
+        print("Please select whitch way you want the list to be sorted.")
+        
+        option2 = str(input("select 1 for ascending or 2 for descending."))
+        
+        if(option2 == '1'):
+            
+            Pass2 = True
+            
+        elif(option2 == '2'):
+            
+            Pass2 = True
+        
+        
+    
+    
         
 
         
