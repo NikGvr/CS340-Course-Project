@@ -101,6 +101,11 @@ class Date:
         
             return ReturnString
         
+        #found out that I could compare touples for the sorting ( option 4 )
+        
+        def ToTuple(self):
+            return (self.YearNum, self.MonNum, self.DayNum)
+        
 
 # the time class
 
@@ -497,8 +502,6 @@ def DriverDictCreationOrUpdate():
 
 # makign the sorting algorithm for option 4
 
-
-
 # making the sorted verion for option 4
 
 # list needed: F1OutputFileSorted = []
@@ -531,11 +534,12 @@ def F1OutputFileSorting():
             
             print("incorect option please try again")
             
-        if(Pass == True):
-            
-            break
+    
+    FieldNum = option
     
     Pass2 = False
+    
+    AscOrDesc = ""
     
     while Pass2 == False:
         
@@ -546,11 +550,129 @@ def F1OutputFileSorting():
         if(option2 == '1'):
             
             Pass2 = True
+            AscOrDesc = "Ascending"
             
         elif(option2 == '2'):
             
             Pass2 = True
+            AscOrDesc = "Descending"
+        else:
+            
+            print("invalid option please try again.")
+            
         
+    # now doing the sorting based on the field number
+    
+    if FieldNum == 1:
+        
+        # that means the Grand Prix value
+        
+        if AscOrDesc == "Ascending":
+            
+            #the reverse value is the one choosing which way to sort True = Desc
+            
+            F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.GrandPrix, reverse=False)
+
+        elif AscOrDesc == "Descending":
+            
+            F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.GrandPrix, reverse=True)
+            
+    elif FieldNum == 2:
+        
+        #that is the Date Value
+        
+        if AscOrDesc == "Ascending":
+            
+            #the reverse value is the one choosing which way to sort True = Desc
+            
+            F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Date.ToTuple(), reverse=False)
+
+        elif AscOrDesc == "Descending":
+            
+            F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Date.ToTuple(), reverse=True)
+        
+    elif FieldNum == 3:
+        
+        #that is the Winner value
+        
+        if AscOrDesc == "Ascending":
+            
+            #the reverse value is the one choosing which way to sort True = Desc
+            
+            F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Winner, reverse=False)
+
+        elif AscOrDesc == "Descending":
+            
+            F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Winner, reverse=True)
+        
+    elif FieldNum == 4:
+        
+        #that is the Car value
+        
+        if AscOrDesc == "Ascending":
+            
+            #the reverse value is the one choosing which way to sort True = Desc
+            
+            F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Car, reverse=False)
+
+        elif AscOrDesc == "Descending":
+            
+            F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Car, reverse=True)
+        
+    elif FieldNum == 5:
+        
+        # that is the Laps Value
+        
+        if AscOrDesc == "Ascending":
+            
+            #the reverse value is the one choosing which way to sort True = Desc
+            
+            F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Laps, reverse=False)
+
+        elif AscOrDesc == "Descending":
+            
+            F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Laps, reverse=True)
+        
+    elif FieldNum == 6:
+        
+        #that is the time value ( OnlyMillisec will be used)
+        
+        if AscOrDesc == "Ascending":
+            
+            #the reverse value is the one choosing which way to sort True = Desc
+            
+            F1RaceFileSorted = sorted(F1RaceFileSorted, key=lambda x: x.Time.OnlyMillisecs, reverse=False)
+
+        elif AscOrDesc == "Descending":
+            
+            F1RaceFileSorted = sorted(F1RaceFileSorted, key=lambda x: x.Time.OnlyMillisecs, reverse=True)
+        
+    elif FieldNum == 7:
+        
+        # that is the Average Lap time value.
+        
+        if AscOrDesc == "Ascending":
+            
+            #the reverse value is the one choosing which way to sort True = Desc
+            
+            F1RaceFileSorted = sorted(F1RaceFileSorted, key=lambda x: x.AverageLapTime, reverse=False)
+
+        elif AscOrDesc == "Descending":
+            
+            F1RaceFileSorted = sorted(F1RaceFileSorted, key=lambda x: x.AverageLapTime, reverse=True)
+            
+            
+
+    # now showing the data inside the F1OutputFileSorted list as asked by the instructions
+    
+    print(f"{"Grand Prix":<15}{"Date":<10}{"Winner":<20}{"Car":<10}{"Laps":<10}{"Time":<10}{"Average Lap Time":<15}")
+    
+    for i in range(len(F1OutputFileSorted)):
+        
+        StringToPrint = (f"{F1OutputFileSorted[i].GrandPrix:<15}{F1OutputFileSorted[i].Date.ReturnDate()}")
+
+            
+            
         
     
     
