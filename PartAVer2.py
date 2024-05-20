@@ -1,6 +1,6 @@
-#Gavriilidis Nikolaos
-#20220427@student.act.edu
-#Part A for Pyhton project
+# Gavriilidis Nikolaos
+# 20220427@student.act.edu
+# Part A for Pyhton project
 
 # imports that will be needed ( suposedly )
 
@@ -8,7 +8,7 @@ import matplotlib.pyplot as plot
 
 # Debug boolean because It is more efficient for me and many other people.
 
-Debug = True
+Debug =  True
 
 # A running boolean because it will be needed.
 
@@ -39,43 +39,46 @@ F1OutputFile = []
 
 F1OutputFileSorted = []
 
-#A dictionary that will be used for option 5 and it will have the driver names and the average lap time (x-axis: driver names. y-axis: average lap time in minutes)
+# A dictionary that will be used for option 5 and it will have the driver names and the average lap time (x-axis: driver names. y-axis: average lap time in minutes)
 
 F1AverageLapTimes = {}
 
-# creating the classes that will be used in the lists, mostly date, time, race, Driver. 
+#option selected value
+
+OptionSelected = 0
+
+# creating the classes that will be used in the lists, mostly date, time, race, Driver.
 
 # Date class
 
 class Date:
-
     # variables used by the class
 
-    self.DayNum = 0 
-    self.DayStr = ""
-    self.MonNum = 0
-    self.MonStr = ""
-    self.YearNum = 0
-    self.YearStr = ""
+    DayNum = 0
+    DayStr = ""
+    MonNum = 0
+    MonStr = ""
+    YearNum = 0
+    YearStr = ""
 
     # list of months that will be used to calculate the variable MonNum
 
-    self.MonthsList = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    MonthsList = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
     # constructor for the class
 
     def __init__(self, day, month, year):
-        
+
         # puttin the day as a number and as a string
 
         self.DayNum = int(day)
 
         # making the day into a string
 
-        if(int(day) <= 9):
+        if (int(day) <= 9):
 
             self.DayStr = ("0" + str(int(day)))
-        
+
         else:
             self.DayStr = str(day)
 
@@ -83,15 +86,14 @@ class Date:
 
         self.MonStr = str(month)
 
-        #making the month number based on the list.
+        # making the month number based on the list.
 
         for i in range(len(self.MonthsList)):
 
-            if(MonthsList[i] == str(month)):
+            if (self.MonthsList[i] == str(month)):
+                MonthIndex = i
 
-                index = i
-
-        self.MonNum = index
+        self.MonNum = MonthIndex
 
         # making the year num and str
 
@@ -102,30 +104,29 @@ class Date:
         # a function to return date in the format that is in te file.
 
         def ReturnDate(self):
-        
+
             ReturnString = f"{self.DayStr}-{self.MonStr}-{self.YearStr}"
-        
+
             return ReturnString
-        
-        #found out that I could compare touples for the sorting ( option 4 )
-        
+
+        # found out that I could compare touples for the sorting ( option 4 )
+
         def ToTuple(self):
             return (self.YearNum, self.MonNum, self.DayNum)
-        
+
 
 # the time class
 
 class Time:
-
     # variables that will be used in the time class.
 
-    self.MinNum = 0
-    self.MinStr = ""
-    self.SecNum = 0
-    self.SecStr = ""
-    self.MillisecNum = 0
-    self.MillisecStr = ""
-    self.OnlyMillisecs = 0
+    MinNum = 0
+    MinStr = ""
+    SecNum = 0
+    SecStr = ""
+    MillisecNum = 0
+    MillisecStr = ""
+    OnlyMillisecs = 0
 
     # constructor for the class
 
@@ -135,7 +136,7 @@ class Time:
 
         self.MinNum = int(minutes)
 
-        if(int(minutes) <= 9):
+        if (int(minutes) <= 9):
 
             self.MinStr = ("0", str(int(minutes)))
 
@@ -147,7 +148,7 @@ class Time:
 
         self.SecNum = int(seconds)
 
-        if(int(seconds) <= 0):
+        if (int(seconds) <= 0):
 
             self.SecStr = ("0", str(int(seconds)))
 
@@ -165,9 +166,9 @@ class Time:
 
     # function to convert time in Milliseconds.
 
-    def ConvertToMilisecs():
-        
-        ReturnNumber = int((self.MinNum*60*1000) + (self.SecNum*1000) + self.MillisecNum)
+    def ConvertToMilisecs(self):
+
+        ReturnNumber = int((self.MinNum * 60 * 1000) + (self.SecNum * 1000) + self.MillisecNum)
 
         return ReturnNumber
 
@@ -183,27 +184,25 @@ class Time:
 # race class to save the races.
 
 class Race:
-
     # variables used by the race class.
 
-    self.GrandPrix = "" # name of the race 
+    GrandPrix = ""  # name of the race
 
-    self.Date = Date # the date of the race
+    Date = Date  # the date of the race
 
-    self.Winner = "" # the name of the winner
+    Winner = ""  # the name of the winner
 
-    self.Car = "" # the name of the car ( the team name )
+    Car = ""  # the name of the car ( the team name )
 
-    self.Laps = 0 # the number of laps
+    Laps = 0  # the number of laps
 
-    self.Time = Time # the time it took
+    Time = Time  # the time it took
 
-    self.AverageLapTime = 0.0 # the average lap time ( needed for option 3 )
+    AverageLapTime = 0.0  # the average lap time ( needed for option 3 )
 
     # a constructor for the Race class
 
     def __init__(self, GrandPrix, Date, Winner, Car, Laps, Time):
-
         # GrandPrix name
 
         self.GrandPrix = str(GrandPrix)
@@ -235,34 +234,31 @@ class Race:
     # function to return race as a string.
 
     def ReturnRace(self):
-
-        StringToReturn = (f"{self.GrandPrix:<15} {self.Date.ReturnDate():<15} {self.Winner:<20} {self.Car:<20} {self.Laps:<5} {self.Time.ReturnTime():<15}")
+        StringToReturn = (
+            f"{self.GrandPrix:<15} {self.Date.ReturnDate():<15} {self.Winner:<20} {self.Car:<20} {self.Laps:<5} {self.Time.ReturnTime():<15}")
 
         return StringToReturn
-    
+
     # function to output data to the output file in option 3
 
     def ReturnRaceOutput(self):
-
-        StringToReturn = (f"{self.GrandPrix:<15} {self.Date.ReturnDate():<15} {self.Winner:<20} {self.Car:<20} {self.Laps:<5} {self.Time.ReturnTime():<15}")
+        StringToReturn = (
+            f"{self.GrandPrix:<15} {self.Date.ReturnDate():<15} {self.Winner:<20} {self.Car:<20} {self.Laps:<5} {self.Time.ReturnTime():<15}")
 
         return StringToReturn
 
 
-    
 # a class for the driver data ( needed for option 5)
 
 class Driver:
-
     # variables used by the driver class.
 
-    self.DriverName = ""
-    self.TotalLaps = 0
-    self.TotalTime = 0
-    self.AverageLapTime = 0
+    DriverName = ""
+    TotalLaps = 0
+    TotalTime = 0
+    AverageLapTime = 0
 
     def __init__(self, name, laps, time):
-
         self.DriverName = str(name)
 
         self.TotalLaps = int(laps)
@@ -272,7 +268,6 @@ class Driver:
         self.AverageLapTime = float(self.TotalLaps / self.TotalTime)
 
     def AddTimeAndLaps(self, laps, time):
-
         self.TotalLaps = int(self.TotalLaps) + int(laps)
 
         self.TotalTime = self.TotalTime + time.ConvertToMillisecs()
@@ -281,20 +276,19 @@ class Driver:
 
         self.AverageLapTime = float(self.TotalLaps / self.TotalTime) / 60000.0
 
-    def ReturnAverageLapTime():
-
+    def ReturnAverageLapTime(self):
         ReturnNumber = float(self.TotalLaps / self.TotalTime) / 60000.0
 
         return ReturnNumber
-    
-    def GetDetails():
 
-        ReturnString = (f"Name: {self.DriverName} \nLaps: {self.TotalLaps} \nTotalTimeInMilliseconds: {self.TotalTime} \n")
-    
+    def GetDetails(self):
+        ReturnString = (
+            f"Name: {self.DriverName} \nLaps: {self.TotalLaps} \nTotalTimeInMilliseconds: {self.TotalTime} \n")
+
 
 # Creating a function that creates the file regardless if it exists or not.
 
-def CreateInputFile(): #Creationg of the time (it will overwrite if existent.) Based on C++ project comments.
+def CreateInputFile():  # Creationg of the time (it will overwrite if existent.) Based on C++ project comments.
 
     file = open(inputfile, "w")
 
@@ -324,16 +318,16 @@ def CreateInputFile(): #Creationg of the time (it will overwrite if existent.) B
 
     file.close()
 
+
 # creating a function that reads the data from the file and puts it into the F1File.
 
-def FileToList(): # Taking the F1File list and appending the data from the PartA file.
+def FileToList():  # Taking the F1File list and appending the data from the PartA file.
 
     file = open(inputfile, "r")
 
     lines = file.readlines()
 
     for line in lines[1:]:
-
         tokens = line.strip().split(',')
 
         race_token = str(tokens[0])
@@ -363,7 +357,6 @@ def FileToList(): # Taking the F1File list and appending the data from the PartA
         seconds, millisec = seconds_millisec.split(".")
 
         time_token = Time(minutes, seconds, millisec)
-
 
         RaceToAppend = Race(race_token, date_token, winner_token, car_token, laps_token, time_token)
 
@@ -371,16 +364,15 @@ def FileToList(): # Taking the F1File list and appending the data from the PartA
 
     file.close()
 
+
 # making a function that reads the data from the file, puts it into the F1FileSorted and sorts it for the option 2 usage.
 
-def F1FileSortedCreation():
-
+def F1FileSortedCreation(F1FileSorted):
     file = open(inputfile, "r")
 
     lines = file.readlines()
 
     for line in lines[1:]:
-
         tokens = line.strip().split(',')
 
         race_token = str(tokens[0])
@@ -410,7 +402,6 @@ def F1FileSortedCreation():
         seconds, millisec = seconds_millisec.split(".")
 
         time_token = Time(minutes, seconds, millisec)
-
 
         RaceToAppend = Race(race_token, date_token, winner_token, car_token, laps_token, time_token)
 
@@ -428,9 +419,7 @@ def F1FileSortedCreation():
 # list needed: F1OutputFile = []
 
 def F1OutputFileCreation():
-
     for i in range(len(F1File)):
-
         F1OutputFile[i] = F1File[i]
 
     file = open(outputfile, 'w')
@@ -438,21 +427,21 @@ def F1OutputFileCreation():
     file.write("GRAND PRIX,DATE,WINNER,CAR,LAPS,TIME,AVGLAPTIME\n")
 
     for i in range(len(F1OutputFile)):
-
-        StringToWrite = (f"{F1OutputFile[i].GrandPrix},{F1OutputFile[i].Date.ReturnDate()},{F1OutputFile[i].Winner},{self.Car},{F1OutputFile[i].Laps},{F1OutputFile[i].Time.ReturnTime()},{F1OutputFile[i].AverageLapTime}\n")
+        StringToWrite = (
+            f"{F1OutputFile[i].GrandPrix},{F1OutputFile[i].Date.ReturnDate()},{F1OutputFile[i].Winner},{F1OutputFile[i].Car},{F1OutputFile[i].Laps},{F1OutputFile[i].Time.ReturnTime()},{F1OutputFile[i].AverageLapTime}\n")
 
         file.write(StringToWrite)
 
     file.close()
 
+
 # a function that will take each driver from the starting file and add the needed data into the dictionary
 
 # First make a function that reads the list F1File and adds the needed data
 
-#dict needed: F1AverageLapTimes
+# dict needed: F1AverageLapTimes
 
 def DriverDictCreationOrUpdate():
-
     for i in range(len(F1File)):
 
         # we need a variable that will work as a string with witch we will check if a key ( diver's name ) exists inside the dictionary or not.
@@ -464,35 +453,36 @@ def DriverDictCreationOrUpdate():
         if FindDriver in F1AverageLapTimes:
 
             if Debug == True:
-                print("Debug: Yes the driver exists and we will add the time and laps, and create the average lap time for the driver.")
+                print(
+                    "Debug: Yes the driver exists and we will add the time and laps, and create the average lap time for the driver.")
                 print("Showing key and value before the update.")
-                print("Key:" + FindDriver )
+                print("Key:" + FindDriver)
                 print("value: " + F1AverageLapTimes[FindDriver].GetDetails())
                 print("updating now")
-            
+
             # updating the values
 
             KeyOfValueToUpdate = FindDriver
 
             ValueToUpdate = F1AverageLapTimes[FindDriver].AddTimeAndLaps(F1File[i].Laps, F1File[i].Time)
-            
+
             if Debug == True:
-                
                 print("values updated. SHowing them now,")
-                print("Key:" + FindDriver )
+                print("Key:" + FindDriver)
                 print("value: " + F1AverageLapTimes[FindDriver].GetDetails())
-                
+
 
         else:
 
             if Debug == True:
-                print("Debug: The driver does not exist to we will create the driver and add the time and laps into the driver object.")
+                print(
+                    "Debug: The driver does not exist to we will create the driver and add the time and laps into the driver object.")
 
-            #String that will be used as the key in the dict.
+            # String that will be used as the key in the dict.
 
             DriverKey = str(F1File[i].Winner)
 
-            #Driver Object that will be used inside the dict.
+            # Driver Object that will be used inside the dict.
 
             DriverObj = Driver(F1File[i].Winner, F1File[i].Laps, F1File[i].Time)
 
@@ -512,205 +502,200 @@ def DriverDictCreationOrUpdate():
 
 # list needed: F1OutputFileSorted = []
 
-def F1OutputFileSorting():
-    
+def F1OutputFileSorting(F1OutputFileSorted):
     # copy the data
-    
+
     for i in range(len(F1OutputFile)):
-    
         F1OutputFileSorted.append(F1OutputFile[i])
-    
+
     # now ask the used witch field does the user want to sort.
-    
+
     Pass = False
 
     while Pass == False:
-        
+
         print("Please enter a number cooresponding to the field that you want to sort the list by.")
-        
-        option = int(input("1) Sort by Grand Prix Name\n2) Sort by Date\n3) Sort by Winner\n4) Sort by Car\n5) Sort by laps\n6) Sort by time\n7) Sort by Average Lap Time."))
-        
-        if option in range(1,8):
-            
+
+        option = int(input(
+            "1) Sort by Grand Prix Name\n2) Sort by Date\n3) Sort by Winner\n4) Sort by Car\n5) Sort by laps\n6) Sort by time\n7) Sort by Average Lap Time."))
+
+        if option in range(1, 8):
+
             Pass = True
-            
+
             print("Accepted option, sorting now.")
-            
+
         else:
-            
+
             print("incorect option please try again")
-            
-    
+
     FieldNum = option
-    
+
     Pass2 = False
-    
+
     AscOrDesc = ""
-    
+
     while Pass2 == False:
-        
+
         print("Please select whitch way you want the list to be sorted.")
-        
+
         option2 = str(input("select 1 for ascending or 2 for descending."))
-        
-        if(option2 == '1'):
-            
+
+        if (option2 == '1'):
+
             Pass2 = True
             AscOrDesc = "Ascending"
-            
-        elif(option2 == '2'):
-            
+
+        elif (option2 == '2'):
+
             Pass2 = True
             AscOrDesc = "Descending"
         else:
-            
+
             print("invalid option please try again.")
-            
-        
+
     # now doing the sorting based on the field number
-    
+
     if FieldNum == 1:
-        
+
         # that means the Grand Prix value
-        
+
         if AscOrDesc == "Ascending":
-            
-            #the reverse value is the one choosing which way to sort True = Desc
-            
+
+            # the reverse value is the one choosing which way to sort True = Desc
+
             F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.GrandPrix, reverse=False)
 
         elif AscOrDesc == "Descending":
-            
+
             F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.GrandPrix, reverse=True)
-            
+
     elif FieldNum == 2:
-        
-        #that is the Date Value
-        
+
+        # that is the Date Value
+
         if AscOrDesc == "Ascending":
-            
-            #the reverse value is the one choosing which way to sort True = Desc
-            
+
+            # the reverse value is the one choosing which way to sort True = Desc
+
             F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Date.ToTuple(), reverse=False)
 
         elif AscOrDesc == "Descending":
-            
+
             F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Date.ToTuple(), reverse=True)
-        
+
     elif FieldNum == 3:
-        
-        #that is the Winner value
-        
+
+        # that is the Winner value
+
         if AscOrDesc == "Ascending":
-            
-            #the reverse value is the one choosing which way to sort True = Desc
-            
+
+            # the reverse value is the one choosing which way to sort True = Desc
+
             F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Winner, reverse=False)
 
         elif AscOrDesc == "Descending":
-            
+
             F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Winner, reverse=True)
-        
+
     elif FieldNum == 4:
-        
-        #that is the Car value
-        
+
+        # that is the Car value
+
         if AscOrDesc == "Ascending":
-            
-            #the reverse value is the one choosing which way to sort True = Desc
-            
+
+            # the reverse value is the one choosing which way to sort True = Desc
+
             F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Car, reverse=False)
 
         elif AscOrDesc == "Descending":
-            
+
             F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Car, reverse=True)
-        
+
     elif FieldNum == 5:
-        
+
         # that is the Laps Value
-        
+
         if AscOrDesc == "Ascending":
-            
-            #the reverse value is the one choosing which way to sort True = Desc
-            
+
+            # the reverse value is the one choosing which way to sort True = Desc
+
             F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Laps, reverse=False)
 
         elif AscOrDesc == "Descending":
-            
+
             F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Laps, reverse=True)
-        
+
     elif FieldNum == 6:
-        
-        #that is the time value ( OnlyMillisec will be used)
-        
+
+        # that is the time value ( OnlyMillisec will be used)
+
         if AscOrDesc == "Ascending":
-            
-            #the reverse value is the one choosing which way to sort True = Desc
-            
-            F1RaceFileSorted = sorted(F1RaceFileSorted, key=lambda x: x.Time.OnlyMillisecs, reverse=False)
+
+            # the reverse value is the one choosing which way to sort True = Desc
+
+            F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Time.OnlyMillisecs, reverse=False)
 
         elif AscOrDesc == "Descending":
-            
-            F1RaceFileSorted = sorted(F1RaceFileSorted, key=lambda x: x.Time.OnlyMillisecs, reverse=True)
-        
+
+            F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.Time.OnlyMillisecs, reverse=True)
+
     elif FieldNum == 7:
-        
+
         # that is the Average Lap time value.
-        
+
         if AscOrDesc == "Ascending":
-            
-            #the reverse value is the one choosing which way to sort True = Desc
-            
-            F1RaceFileSorted = sorted(F1RaceFileSorted, key=lambda x: x.AverageLapTime, reverse=False)
+
+            # the reverse value is the one choosing which way to sort True = Desc
+
+            F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.AverageLapTime, reverse=False)
 
         elif AscOrDesc == "Descending":
-            
-            F1RaceFileSorted = sorted(F1RaceFileSorted, key=lambda x: x.AverageLapTime, reverse=True)
-            
-            
+
+            F1OutputFileSorted = sorted(F1OutputFileSorted, key=lambda x: x.AverageLapTime, reverse=True)
 
     # now showing the data inside the F1OutputFileSorted list as asked by the instructions
-    
+
     print(f"{"Grand Prix":<15}{"Date":<10}{"Winner":<20}{"Car":<10}{"Laps":<10}{"Time":<10}{"Average Lap Time":<15}")
-    
+
     for i in range(len(F1OutputFileSorted)):
-        
-        StringToPrint = (f"{F1OutputFileSorted[i].GrandPrix:<15}{F1OutputFileSorted[i].Date.ReturnDate():<15}{F1OutputFileSorted[i].Winner:<15}{F1OutputFileSorted[i].Car:<15}{F1OutputFileSorted[i].Laps:<15}{F1OutputFileSorted[i].Time.ReturnTIme():<15}{F1OutputFileSorted[i].AverageLapTime:<15}")
-        
+        StringToPrint = (
+            f"{F1OutputFileSorted[i].GrandPrix:<15}{F1OutputFileSorted[i].Date.ReturnDate():<15}{F1OutputFileSorted[i].Winner:<15}{F1OutputFileSorted[i].Car:<15}{F1OutputFileSorted[i].Laps:<15}{F1OutputFileSorted[i].Time.ReturnTIme():<15}{F1OutputFileSorted[i].AverageLapTime:<15}")
+
+
 # doing the bar graph for option 5
 
 def MakeGraph():
-    
     # getting the dirver names
-    
+
     driver_names = list(F1AverageLapTimes.keys())
-    
+
     # getting the average lap times
-    
+
     average_lap_times = [Driver.ReturnAverageLapTime() for Driver in F1AverageLapTimes.values()]
-    
+
     # Create the bar graph
-    
+
     plot.figure(figsize=(10, 6))
-    
+
     # setting the values used in the plot
-    
+
     plot.bar(driver_names, average_lap_times, color='blue')
-    
+
     # Add titles and labels
-    
-    plot.title('Average Lap Time for Each Driver') # setting title
-    
-    plot.xlabel('Driver Name') # setting the x-axis label
-    
-    plot.ylabel('Average Lap Time (ms)') # setting the y-axis label
-    
-    plot.show() # show graph
-    
+
+    plot.title('Average Lap Time for Each Driver')  # setting title
+
+    plot.xlabel('Driver Name')  # setting the x-axis label
+
+    plot.ylabel('Average Lap Time (ms)')  # setting the y-axis label
+
+    plot.show()  # show graph
+
+
 # making the option showing for the user.
 
 def ShowOptions():
-
     print("======================================================================")
     print("  F1 GRAND PRIX RACING DATA & STATISTICS FOR THE 2023 RACING SEASON.  ")
     print("======================================================================")
@@ -720,116 +705,122 @@ def ShowOptions():
     print("4. Sort and display the data based on user parameters.")
     print("5. Calculate and graph total lap time per driver.")
     print("6. Exit the program.")
-    
+
+
 # making the OptionSelectionFunction
 
-#making the option selection value
+# making the option selection value
 
 OptionSelected = ''
 
-valid_options = {'1', '2', '3', '4', '5', '6'}
+valid_options = {1, 2, 3, 4, 5, 6}
 
-def OptionSelection():
-    
+
+def OptionSelection(OptionSelected):
     ShowOptions()
-    
+
     Pass = False
-    
+
     while Pass == False:
-        
-        OptionSelected = str(input("Please input the number of the option that you want to select and run."))
-        
+
+        OptionSelected = int(input("Please input the number of the option that you want to select and run."))
+
         if OptionSelected in valid_options:
-            
             print("Valid option selected. Continuing.")
-            
+            print("the value of OptionSelected is ", OptionSelected)
+
             Pass = True
-            
+
+
 # making the functions that correspond to the options
 
 def Option1():
     FileToList()
-    
+
+
 def Option2():
-    F1FileSortedCreation()
-    
+    F1FileSortedCreation(F1FileSorted)
+
+
 def Option3():
     F1OutputFileCreation()
-    
+
+
 def Option4():
-    
     if F1OutputFile != []:
-        
-        F1OutputFileSorting()
-        
+
+        F1OutputFileSorting(F1OutputFileSorted)
+
     else:
-        
+
         print('Please run option 3 before running option 4')
-        
+
+
 def Option5():
-    
     DriverDictCreationOrUpdate()
-    
+
     MakeGraph()
-    
+
+
 def Option6():
     print('ByeBye, see you another time.')
     Running = False
-    
-def OptionRun():
-    
-    if OptionSelected == '1':
-        
+
+
+def OptionRun(OptionSelected):
+
+    print("the value of option selected is : ", OptionSelected)
+    if OptionSelected == 1:
+
         print('option 1 selected')
         Option1()
-        
-    elif OptionSelected == '2':
-        
+
+    elif OptionSelected == 2:
+
         print("option 2 selected")
         Option2()
-        
-    elif OptionSelected == '3':
-        
+
+    elif OptionSelected == 3:
+
         print("option 3 selected")
         Option3()
-        
-    elif OptionSelected == '4':
-        
+
+    elif OptionSelected == 4:
+
         print('option 4 selected')
         Option4()
-        
-    elif OptionSelected == '5':
-        
+
+    elif OptionSelected == 5:
+
         print('option 5 selected')
         Option5()
-        
-    elif OptionSelected == '6':
-        
+
+    elif OptionSelected == 6:
+
         print('option 6 selected')
         Option6()
-        
+
     else:
-        
+
         print("no option selected")
-        
+
+
 # making the BootSequence before running in the main function
 
 def BootSequence():
     CreateInputFile()
-    
-    
+
+
 def Main():
-    
     # running the boot sequence
-    
+
     BootSequence()
-    
+
     while Running == True:
-        
-        OptionSelection()
-    
-        OptionRun()
-        
+        OptionSelection(OptionSelected)
+
+        OptionRun(OptionSelected)
+
+
 if __name__ == '__main__':
-    
     Main()
