@@ -4,9 +4,15 @@
 
 # imports that will be needed ( suposedly )
 
+import matplotlib.pyplot as plot
+
 # Debug boolean because It is more efficient for me and many other people.
 
 Debug = True
+
+# A running boolean because it will be needed.
+
+Running = True
 
 # Classes, filenames and lists that will be needed for the project based on project desciption.
 
@@ -417,7 +423,7 @@ def F1FileSortedCreation():
     F1FileSorted = sorted(F1FileSorted, key=lambda x: x.GrandPrix)
 
 
-# Creation of the list for option 3, outcome : there is no possibility of the user 3 needing to run option 3 agian when running option 4
+# Creation of the list for option 3
 
 # list needed: F1OutputFile = []
 
@@ -669,18 +675,161 @@ def F1OutputFileSorting():
     
     for i in range(len(F1OutputFileSorted)):
         
-        StringToPrint = (f"{F1OutputFileSorted[i].GrandPrix:<15}{F1OutputFileSorted[i].Date.ReturnDate()}")
-
-            
-            
+        StringToPrint = (f"{F1OutputFileSorted[i].GrandPrix:<15}{F1OutputFileSorted[i].Date.ReturnDate():<15}{F1OutputFileSorted[i].Winner:<15}{F1OutputFileSorted[i].Car:<15}{F1OutputFileSorted[i].Laps:<15}{F1OutputFileSorted[i].Time.ReturnTIme():<15}{F1OutputFileSorted[i].AverageLapTime:<15}")
         
+# doing the bar graph for option 5
+
+def MakeGraph():
+    
+    # getting the dirver names
+    
+    driver_names = list(F1AverageLapTimes.keys())
+    
+    # getting the average lap times
+    
+    average_lap_times = [Driver.ReturnAverageLapTime() for Driver in F1AverageLapTimes.values()]
+    
+    # Create the bar graph
+    
+    plot.figure(figsize=(10, 6))
+    
+    # setting the values used in the plot
+    
+    plot.bar(driver_names, average_lap_times, color='blue')
+    
+    # Add titles and labels
+    
+    plot.title('Average Lap Time for Each Driver') # setting title
+    
+    plot.xlabel('Driver Name') # setting the x-axis label
+    
+    plot.ylabel('Average Lap Time (ms)') # setting the y-axis label
+    
+    plot.show() # show graph
+    
+# making the option showing for the user.
+
+def ShowOptions():
+
+    print("======================================================================")
+    print("  F1 GRAND PRIX RACING DATA & STATISTICS FOR THE 2023 RACING SEASON.  ")
+    print("======================================================================")
+    print("1. Read and display the F1 Grand Prix data for the 2023 racing season.")
+    print("2. Filter and sort race data based on a minimum threshold of laps.")
+    print("3. Calculate average lap time per race, save, retrieve, display.")
+    print("4. Sort and display the data based on user parameters.")
+    print("5. Calculate and graph total lap time per driver.")
+    print("6. Exit the program.")
+    
+# making the OptionSelectionFunction
+
+#making the option selection value
+
+OptionSelected = ''
+
+valid_options = {'1', '2', '3', '4', '5', '6'}
+
+def OptionSelection():
+    
+    ShowOptions()
+    
+    Pass = False
+    
+    while Pass == False:
+        
+        OptionSelected = str(input("Please input the number of the option that you want to select and run."))
+        
+        if OptionSelected in valid_options:
+            
+            print("Valid option selected. Continuing.")
+            
+            Pass = True
+            
+# making the functions that correspond to the options
+
+def Option1():
+    FileToList()
+    
+def Option2():
+    F1FileSortedCreation()
+    
+def Option3():
+    F1OutputFileCreation()
+    
+def Option4():
+    
+    if F1OutputFile != []:
+        
+        F1OutputFileSorting()
+        
+    else:
+        
+        print('Please run option 3 before running option 4')
+        
+def Option5():
+    
+    DriverDictCreationOrUpdate()
+    
+    MakeGraph()
+    
+def Option6():
+    print('ByeBye, see you another time.')
+    Running = False
+    
+def OptionRun():
+    
+    if OptionSelected == '1':
+        
+        print('option 1 selected')
+        Option1()
+        
+    elif OptionSelected == '2':
+        
+        print("option 2 selected")
+        Option2()
+        
+    elif OptionSelected == '3':
+        
+        print("option 3 selected")
+        Option3()
+        
+    elif OptionSelected == '4':
+        
+        print('option 4 selected')
+        Option4()
+        
+    elif OptionSelected == '5':
+        
+        print('option 5 selected')
+        Option5()
+        
+    elif OptionSelected == '6':
+        
+        print('option 6 selected')
+        Option6()
+        
+    else:
+        
+        print("no option selected")
+        
+# making the BootSequence before running in the main function
+
+def BootSequence():
+    CreateInputFile()
     
     
+def Main():
+    
+    # running the boot sequence
+    
+    BootSequence()
+    
+    while Running == True:
         
-
+        OptionSelection()
+    
+        OptionRun()
         
-
-
-
-
-
+if __name__ == '__main__':
+    
+    Main()
